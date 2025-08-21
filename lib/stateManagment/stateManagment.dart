@@ -2,7 +2,7 @@
 // App State Management
 import 'package:flutter/material.dart';
 import 'package:fristonevs/data_model/therapyProgram.dart';
-import 'package:fristonevs/main.dart';
+import 'package:fristonevs/stateManagment/abstractServices.dart';
 
 class AppState with ChangeNotifier {
   UserProfile? _userProfile;

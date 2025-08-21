@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fristonevs/data_model/therapyProgram.dart';
-import 'package:fristonevs/main.dart';
+import 'package:fristonevs/stateManagment/abstractServices.dart';
+import 'package:fristonevs/theme/theme.dart';
 
 class FitnessService implements IFitnessService {
   @override
