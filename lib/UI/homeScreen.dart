@@ -1,10 +1,10 @@
-
 // Home Screen
 import 'package:flutter/material.dart';
 import 'package:fristonevs/data_model/therapyProgram.dart';
 import 'package:fristonevs/fitenessService.dart';
-import 'package:fristonevs/main.dart';
 import 'package:fristonevs/stateManagment/stateManagment.dart';
+import 'package:fristonevs/theme/concrete.dart';
+import 'package:fristonevs/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +14,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   int _currentIndex = 0;
@@ -22,19 +23,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
-    
+
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
     _controller.forward();
-    
+
     // Load user profile when the app starts
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final appState = Provider.of<AppState>(context, listen: false);
@@ -60,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               // App Bar
               _buildAppBar(context),
               const SizedBox(height: 24),
-              
+
               // Main Content with animation
               Expanded(
                 child: PageView(
@@ -77,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ],
                 ),
               ),
-              
+
               // Bottom Navigation Indicator
               _buildPageIndicator(),
             ],
@@ -88,10 +86,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(BuildContext context) {
     final appState = Provider.of<AppState>(context);
     final user = appState.userProfile;
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -125,10 +123,7 @@ Widget _buildAppBar(BuildContext context) {
               if (user != null)
                 Text(
                   "${AppConstants.arabicTranslations['welcome']}, ${user.name}",
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white70,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.white70),
                 ),
             ],
           ),
@@ -155,7 +150,7 @@ Widget _buildAppBar(BuildContext context) {
   Widget _buildDashboard(BuildContext context) {
     final appState = Provider.of<AppState>(context);
     final user = appState.userProfile;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -170,17 +165,14 @@ Widget _buildAppBar(BuildContext context) {
         FadeTransition(
           opacity: _animation,
           child: Text(
-            user != null 
+            user != null
                 ? '${user.age} years, ${user.fitnessLevel}'
                 : 'Loading...',
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.white70,
-            ),
+            style: const TextStyle(fontSize: 16, color: Colors.white70),
           ),
         ),
         const SizedBox(height: 32),
-        
+
         // Stats Cards
         SlideTransition(
           position: Tween<Offset>(
@@ -200,8 +192,16 @@ Widget _buildAppBar(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildStatItem("7,892", "Steps", Icons.directions_walk),
-                    _buildStatItem("32", "Therapy\nMinutes", Icons.medical_services),
-                    _buildStatItem("45", "Workout\nMinutes", Icons.fitness_center),
+                    _buildStatItem(
+                      "32",
+                      "Therapy\nMinutes",
+                      Icons.medical_services,
+                    ),
+                    _buildStatItem(
+                      "45",
+                      "Workout\nMinutes",
+                      Icons.fitness_center,
+                    ),
                   ],
                 ),
               ],
@@ -209,7 +209,7 @@ Widget _buildAppBar(BuildContext context) {
           ),
         ),
         const SizedBox(height: 24),
-        
+
         // Quick Actions
         SlideTransition(
           position: Tween<Offset>(
@@ -222,7 +222,7 @@ Widget _buildAppBar(BuildContext context) {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         GridView.count(
           shrinkWrap: true,
           crossAxisCount: 2,
@@ -261,20 +261,20 @@ Widget _buildAppBar(BuildContext context) {
 
   Widget _buildTherapySection() {
     final therapyService = TherapyService();
-    
+
     return FutureBuilder<List<TherapyProgram>>(
       future: therapyService.getTherapyPrograms(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        
+
         final programs = snapshot.data!;
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -282,16 +282,19 @@ Widget _buildAppBar(BuildContext context) {
               opacity: _animation,
               child: Text(
                 AppConstants.arabicTranslations['therapy']!,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 16),
-            
+
             Expanded(
               child: ListView(
-                children: programs.map((program) => 
-                  _buildProgramCard(program)
-                ).toList(),
+                children: programs
+                    .map((program) => _buildProgramCard(program))
+                    .toList(),
               ),
             ),
           ],
@@ -302,20 +305,20 @@ Widget _buildAppBar(BuildContext context) {
 
   Widget _buildFitnessSection() {
     final fitnessService = FitnessService();
-    
+
     return FutureBuilder<List<FitnessProgram>>(
       future: fitnessService.getFitnessPrograms(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        
+
         final programs = snapshot.data!;
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -323,16 +326,19 @@ Widget _buildAppBar(BuildContext context) {
               opacity: _animation,
               child: Text(
                 AppConstants.arabicTranslations['fitness']!,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 16),
-            
+
             Expanded(
               child: ListView(
-                children: programs.map((program) => 
-                  _buildWorkoutCard(program)
-                ).toList(),
+                children: programs
+                    .map((program) => _buildWorkoutCard(program))
+                    .toList(),
               ),
             ),
           ],
@@ -353,7 +359,7 @@ Widget _buildAppBar(BuildContext context) {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         Expanded(
           child: ListView(
             children: [
@@ -401,9 +407,7 @@ Widget _buildAppBar(BuildContext context) {
             offset: const Offset(0, 10),
           ),
         ],
-        border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-        ),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: child,
     );
@@ -416,24 +420,23 @@ Widget _buildAppBar(BuildContext context) {
         const SizedBox(height: 8),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.white.withOpacity(0.7),
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.7)),
         ),
       ],
     );
   }
 
-  Widget _buildActionButton(String title, IconData icon, Color color, {VoidCallback? onTap}) {
+  Widget _buildActionButton(
+    String title,
+    IconData icon,
+    Color color, {
+    VoidCallback? onTap,
+  }) {
     return ScaleTransition(
       scale: _animation,
       child: Container(
@@ -442,10 +445,7 @@ Widget _buildAppBar(BuildContext context) {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              color.withOpacity(0.7),
-              color.withOpacity(0.3),
-            ],
+            colors: [color.withOpacity(0.7), color.withOpacity(0.3)],
           ),
           boxShadow: [
             BoxShadow(
@@ -502,9 +502,7 @@ Widget _buildAppBar(BuildContext context) {
               program.color.withOpacity(0.1),
             ],
           ),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.1),
-          ),
+          border: Border.all(color: Colors.white.withOpacity(0.1)),
         ),
         child: ListTile(
           leading: Icon(program.icon, color: program.color, size: 32),
@@ -555,10 +553,7 @@ Widget _buildAppBar(BuildContext context) {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.7),
-              ],
+              colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
             ),
           ),
           child: ListTile(
@@ -569,7 +564,11 @@ Widget _buildAppBar(BuildContext context) {
             ),
             subtitle: Text(program.description),
             trailing: IconButton(
-              icon: const Icon(Icons.play_circle_fill, color: Colors.white, size: 36),
+              icon: const Icon(
+                Icons.play_circle_fill,
+                color: Colors.white,
+                size: 36,
+              ),
               onPressed: () {},
             ),
           ),
@@ -578,7 +577,12 @@ Widget _buildAppBar(BuildContext context) {
     );
   }
 
-  Widget _buildNutritionCard(String title, String subtitle, IconData icon, Color color) {
+  Widget _buildNutritionCard(
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+  ) {
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0.5, 0),
@@ -591,14 +595,9 @@ Widget _buildAppBar(BuildContext context) {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              color.withOpacity(0.3),
-              color.withOpacity(0.1),
-            ],
+            colors: [color.withOpacity(0.3), color.withOpacity(0.1)],
           ),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.1),
-          ),
+          border: Border.all(color: Colors.white.withOpacity(0.1)),
         ),
         child: ListTile(
           leading: Icon(icon, color: color, size: 32),
@@ -607,7 +606,10 @@ Widget _buildAppBar(BuildContext context) {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(subtitle),
-          trailing: Icon(Icons.arrow_forward_ios, color: Colors.white.withOpacity(0.5)),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.white.withOpacity(0.5),
+          ),
           onTap: () {},
         ),
       ),
@@ -624,8 +626,8 @@ Widget _buildAppBar(BuildContext context) {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentIndex == index 
-                ? AppConstants.primaryColor 
+            color: _currentIndex == index
+                ? AppConstants.primaryColor
                 : Colors.white.withOpacity(0.3),
           ),
         );
@@ -678,4 +680,3 @@ Widget _buildAppBar(BuildContext context) {
     );
   }
 }
-

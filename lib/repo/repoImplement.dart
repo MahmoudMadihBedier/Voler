@@ -1,7 +1,7 @@
 
 // User Repository Implementation
 import 'package:fristonevs/data_model/therapyProgram.dart';
-import 'package:fristonevs/main.dart';
+import 'package:fristonevs/stateManagment/abstractServices.dart';
 
 class UserRepository implements IUserRepository {
   @override
