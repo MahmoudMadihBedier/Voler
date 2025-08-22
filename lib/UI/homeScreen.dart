@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
           child: const CircleAvatar(
             backgroundColor: AppConstants.secondaryColor,
             child: Text(
-              "F",
+              "A",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                "Futear",
+                "V O L E R",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen>
             style: const TextStyle(fontSize: 18, color: Colors.white70),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         FadeTransition(
           opacity: _animation,
           child: Text(
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen>
             style: const TextStyle(fontSize: 16, color: Colors.white70),
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 22),
 
         // Stats Cards
         SlideTransition(
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen>
                   "Today's Activity",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen>
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         GridView.count(
           shrinkWrap: true,
@@ -358,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen>
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         Expanded(
           child: ListView(
